@@ -1,0 +1,10 @@
+[Unit]
+ Description=Run ddns.py every 10 minutes
+
+[Timer]
+ Unit=ddns.service
+ OnBootSec=2min
+ OnUnitInactiveSec=10min
+
+[Install]
+ WantedBy=timers.target

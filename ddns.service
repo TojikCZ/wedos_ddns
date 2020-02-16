@@ -1,0 +1,13 @@
+[Unit]
+Description=Checks if our current ip aligns with a remembered ip, modifies a dns entry if that is true
+After=network.target
+
+[Service]
+ExecStart=python /root/ddns/ddns.py
+WorkingDirectory=/root/ddns/
+Environment=WAPI_USERNAME="example@example.com"
+Environment=WAPI_PASSWORD="heslo"
+Environment=WEDOS_DOMAIN="asdf.cz"
+
+[Install]
+WantedBy=multi-user.target
