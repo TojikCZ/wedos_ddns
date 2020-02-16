@@ -10,7 +10,7 @@ Skript nepodporuje IPv6. Já ji zatím nepotřebuju, pokud bude zájem, určitě
 
 Momentálně skript umí přepisovat jen prázdný a hvězdičkový záznam ```example.com``` a ```*.example.com```. Je celkem jednoduché ho přimět editovat pouze subdoménový záznam jako např ```raspi.example.com```, stačí v ddns.py dole poupravit cyklus co prochází záznamy.
 
-## Nastavení wedosu
+## Nastavení WEDOS
 U wedosu je třeba mít zaplé WAPI, wedos má návod jak na to [tady](https://kb.wedos.com/cs/wapi-api-rozhrani/zakladni-informace-wapi-api-rozhrani/wapi-zakladni-informace).
 
 
