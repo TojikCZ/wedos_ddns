@@ -1,6 +1,6 @@
 # Wedos jako DDNS
 
-Využíval jsem DDNS pro přístup ke svému routeru a dalším zařízením pomocí webové adresy. Po zaplnění DDNS domény ale začal být problém získat SSL certifikát kvůli kvótám na Let's Encrypt. Radši jsem tedy chtěl použít vlastní doménu, kterou jsem si už platil u WEDOSu. Očekává se použití na linuxu s init systémem systemd, určitě se dá adaptovat na cron, ale já se s tím nezabýval.
+Využíval jsem DDNS pro přístup ke svému routeru a dalším zařízením pomocí webové adresy. Po zaplnění DDNS domény ale začal být problém získat SSL certifikát kvůli kvótám na Let's Encrypt. Radši jsem tedy chtěl použít vlastní doménu, kterou jsem si už platil u WEDOSu. To vyžadovalo tvorbu tohodle skriptu. Očekává se použití na Linuxu s init systémem Systemd, určitě se dá adaptovat na Cron, ale já se s tím nezabýval.
 
 ### Poznámky
 
@@ -33,7 +33,7 @@ Využívá knihovny requests a requests_toolbelt. Nainstalujete je třeba pomoc�
 > Jelikož je povolování IPv6 rozsahů na WAPI pro mě nemožné, nutím requests aby použily pro komunikaci s WAPI IPv4 adresu, to rozbije SSL certifikát jelikož čeká webovou adresu, ne IP. V requests_toolbelt existuje HostHeaderSSLAdapter, který pro ověření SSL certifikátu umožní použít HTTP *host* hlavičku namísto adresy požadavku.
 
 Je třeba nastavit tři proměnné prostředí, pokud použijete systemd nenastavujte je
-- WAPI_USERNAME - Vaše jméno (emailovka) pro přihlasšování k wedosu
+- WAPI_USERNAME - Vaše jméno (emailovka) pro přihlašování k wedosu
 - WAPI_PASSWORD - WAPI heslo nastavené při jeho zapínání
 - WEDOS_DOMAIN - Jméno vaší domény
 
