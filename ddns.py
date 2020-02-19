@@ -1,8 +1,9 @@
+import ipaddress
 from requests import Session, get
 from hashlib import sha1
 from datetime import datetime
 from requests_toolbelt.adapters.host_header_ssl import HostHeaderSSLAdapter
-import json, socket, os
+import json, socket, os, sys
 
 def get_ipv4_address_for(site_url):
     addrs = socket.getaddrinfo(site_url, 443)
@@ -62,7 +63,23 @@ if os.path.exists("current_ip"):
 else:
     current_ip = "0.0.0.0"
 
-actual_ip = get("https://api.ipify.org").text
+global_ip_resp = get("https://api.ipify.org")
+# Did we got even a 200?
+if global_ip_resp.status_code != 200:
+    print("Non 200 response during global ip retrieval with status {} and text {}.".format(global_ip_resp.status_code, global_ip_resp.text))
+    sys.exit(1)
+actual_ip = global_ip_resp.text
+# Did they send something reasonable back?
+try:
+    addr = ipaddress.ip_address(actual_ip)
+    # It should be a global one, otherwise it has no reason to exist in the global DNS data.
+    if not addr.is_global:
+        print("The address {} is not a global one.".format(addr))
+        sys.exit(2)
+except ValueError:
+    print("The returned data {} do not comprise an IPV4 address.".format(actual_ip))
+    sys.exit(3)
+
 
 # Pokud se změnila ip, dohodni s WAPI změnu
 if actual_ip != current_ip:
