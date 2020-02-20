@@ -1,9 +1,8 @@
-import ipaddress
+import json, socket, os, sys, ipaddress
 from requests import Session, get
 from hashlib import sha1
 from datetime import datetime
 from requests_toolbelt.adapters.host_header_ssl import HostHeaderSSLAdapter
-import json, socket, os, sys
 
 def get_ipv4_address_for(site_url):
     addrs = socket.getaddrinfo(site_url, 443)
@@ -52,7 +51,7 @@ def change_row(s, username, auth_token, id, rdata, domain):
 
     return simple_request(s, username, auth_token, domain, "dns-row-update", additional_data)
 
-# Změnila se nám odnaposled IP adresa?
+# Jaká byla naše adresa naposled?
 if os.path.exists("current_ip"):
     with open("current_ip", "r") as current_ip_file:
         current_ip_lines = current_ip_file.readlines()
@@ -66,7 +65,7 @@ else:
 global_ip_resp = get("https://api.ipify.org")
 # Did we got even a 200?
 if global_ip_resp.status_code != 200:
-    print("Non 200 response during global ip retrieval with status {} and text {}.".format(global_ip_resp.status_code, global_ip_resp.text))
+    print(f"Non 200 response during global ip retrieval with status {global_ip_resp.status_code} and text {global_ip_resp.text}.")
     sys.exit(1)
 actual_ip = global_ip_resp.text
 # Did they send something reasonable back?
@@ -74,10 +73,10 @@ try:
     addr = ipaddress.ip_address(actual_ip)
     # It should be a global one, otherwise it has no reason to exist in the global DNS data.
     if not addr.is_global:
-        print("The address {} is not a global one.".format(addr))
+        print(f"The address {addr} is not a global one.")
         sys.exit(2)
 except ValueError:
-    print("The returned data {} do not comprise an IPV4 address.".format(actual_ip))
+    print(f"The returned data {actual_ip} do not comprise an IPv4 address.")
     sys.exit(3)
 
 
