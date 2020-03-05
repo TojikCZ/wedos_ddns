@@ -66,7 +66,10 @@ global_ip_resp = get("https://api.ipify.org")
 # Did we got even a 200?
 if global_ip_resp.status_code != 200:
     print(f"Non 200 response during global ip retrieval with status {global_ip_resp.status_code} and text {global_ip_resp.text}.")
-    sys.exit(1)
+    if global_ip_resp.status_code == 503:  # Speciální případ kdy se podělá cdn týpků, kde zjišťujeme ip. Já nechci číst maily o pádu aplikace v takovym případě.
+        sys.exit(0)
+    else:
+        sys.exit(1)
 actual_ip = global_ip_resp.text
 # Did they send something reasonable back?
 try:
