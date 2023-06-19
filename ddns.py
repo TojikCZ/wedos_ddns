@@ -62,7 +62,7 @@ if os.path.exists("current_ip"):
 else:
     current_ip = "0.0.0.0"
 
-global_ip_resp = get("https://api.ipify.org")
+global_ip_resp = get("https://ipinfo.io")
 # Did we got even a 200?
 if global_ip_resp.status_code != 200:
     print(f"Non 200 response during global ip retrieval with status {global_ip_resp.status_code} and text {global_ip_resp.text}.")
@@ -70,7 +70,7 @@ if global_ip_resp.status_code != 200:
         sys.exit(0)
     else:
         sys.exit(1)
-actual_ip = global_ip_resp.text
+actual_ip = global_ip_resp.json()["ip"]
 # Did they send something reasonable back?
 try:
     addr = ipaddress.ip_address(actual_ip)
